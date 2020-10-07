@@ -3,10 +3,10 @@ variable "secrets_engines" {
   default     = ["kv"]
   description = "A list of secrets engines to enable"
 
-  validation {
-    condition     = "" # TODO - regex on all valid secrets engines
-    error_message = "Contains an invalid secrets engine"
-  }
+//  validation {
+//    condition     = "" # TODO - regex on all valid secrets engines
+//    error_message = "Contains an invalid secrets engine"
+//  }
 }
 
 variable "default_lease" {
