@@ -1,5 +1,5 @@
 resource "vault_mount" "secrets_engines" {
-  count = length(list(var.secrets_engines))
+  count = length(var.secrets_engines)
   path  = element(var.secrets_engines, count.index)
   type  = element(var.secrets_engines, count.index)
 
