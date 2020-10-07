@@ -15,7 +15,7 @@ resource "vault_mount" "secrets_engines" {
 }
 
 resource "vault_aws_secret_backend" "aws_backend" {
-  count = contains(var.secrets_engines, "aws")
+  count = contains(var.secrets_engines, "aws") ? 1 : 0
   path  = "aws"
 
   access_key = var.aws_access_key
