@@ -31,7 +31,7 @@ resource "vault_aws_secret_backend_role" "aws_backend_role" {
   count = contains(var.secrets_engines, "aws") ? 1 : 0
   name  = var.aws_backend_role_name
 
-  backend         = vault_aws_secret_backend.aws_backend.path
+  backend         = vault_aws_secret_backend.aws_backend[count.index].path
   credential_type = var.aws_backend_role_cred_type
 
   role_arns       = var.aws_role_arns
