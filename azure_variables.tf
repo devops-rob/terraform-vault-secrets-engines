@@ -53,8 +53,8 @@ variable "azure_secret_backend_ttl" {
 
 variable "use_resource_group" {
   type        = bool
-  default     = true
-  description = "Toggle to enable usage of Resource Groups for Azure Role Scopes"
+  default     = false
+  description = "Toggle to enable usage of Resource Groups for Azure Role Scopes.  When set to true, resource_group_identifier must be set."
 }
 
 variable "azure_role" {
@@ -65,7 +65,7 @@ variable "azure_role" {
 
 variable "resource_group_identifier" {
   type        = string
-  default     = null
+  default     = "null"
   description = "Azure Resource Group Identifier"
 }
 
