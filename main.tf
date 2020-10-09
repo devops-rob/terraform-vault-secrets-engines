@@ -11,7 +11,6 @@ resource "vault_mount" "secrets_engines" {
   external_entropy_access = var.external_entropy_access
 
   description = "The ${element(var.secrets_engines, count.index)} secrets engine is mounted at the /${element(var.secrets_engines, count.index)} path"
-
 }
 
 resource "vault_aws_secret_backend" "aws_backend" {
@@ -24,7 +23,6 @@ resource "vault_aws_secret_backend" "aws_backend" {
 
   default_lease_ttl_seconds = var.aws_default_lease
   max_lease_ttl_seconds     = var.aws_max_lease
-
 }
 
 resource "vault_aws_secret_backend_role" "aws_backend_role" {
@@ -41,4 +39,33 @@ resource "vault_aws_secret_backend_role" "aws_backend_role" {
 
   default_sts_ttl = var.aws_sts_default_ttl
   max_sts_ttl     = var.aws_sts_max_ttl
+}
+
+resource "vault_azure_secret_backend" "azure_secret_backend" {
+  count = contains(var.secrets_engines, "azure") ? 1 : 0
+  path  = "azure"
+
+  subscription_id = var.azure_subscription_id
+  tenant_id       = var.azure_tenant_id
+
+  client_id     = var.azure_client_id
+  client_secret = var.azure_client_secret
+  environment   = var.azure_environment
+
+}
+
+resource "vault_azure_secret_backend_role" "azure_secret_backend_role" {
+  count = contains(var.secrets_engines, "azure") ? 1 : 0
+  role  = var.azure_secret_backend_role_name
+
+  backend = vault_azure_secret_backend.azure_secret_backend[count.index].path
+  max_ttl = var.azure_secret_backend_max_ttl
+  ttl     = var.azure_secret_backend_ttl
+
+  azure_roles {
+    role_name = var.azure_role
+    scope     = local.azure_role_scope
+  }
+
+  application_object_id = var.azure_app_id
 }
