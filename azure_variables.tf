@@ -25,7 +25,7 @@ variable "azure_client_secret" {
 variable "azure_environment" {
   type        = string
   default     = "AzurePublicCloud"
-  description = "The Azure cloud environment. Valid values: AzurePublicCloud, AzureUSGovernmentCloud, AzureChinaCloud, AzureGermanCloud.  Defaults to AzurePublicCloud"
+  description = "The Azure cloud environment to use."
 
   validation {
     condition     = can(contains(["AzurePublicCloud", "AzureUSGovernmentCloud", "AzureChinaCloud", "AzureGermanCloud"], var.azure_environment))
