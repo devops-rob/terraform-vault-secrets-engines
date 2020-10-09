@@ -3,10 +3,21 @@ variable "secrets_engines" {
   default     = ["kv"]
   description = "A list of secrets engines to enable"
 
-  //  validation {
-  //    condition     = "" # TODO - regex on all valid secrets engines
-  //    error_message = "Contains an invalid secrets engine"
-  //  }
+  validation {
+    condition     = can(contains(
+    [
+      "kv",
+      "aws",
+      "azure",
+      "gcp",
+      "consul",
+      "pki",
+      "transit",
+      "rabbitmq",
+      "ssh"
+    ], var.secrets_engines))
+    error_message = "Invalid secrets engines"
+  }
 }
 
 variable "default_lease" {
