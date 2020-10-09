@@ -42,7 +42,12 @@ variable "aws_backend_role_cred_type" {
   description = "type of credential to be used when retrieving credentials from the role."
 
   validation {
-    condition     = can(contains(["iam_user", "assumed_role", "federation_token"], var.aws_backend_role_cred_type))
+    condition     = can(contains(
+    [
+      "iam_user",
+      "assumed_role",
+      "federation_token"
+    ], var.aws_backend_role_cred_type))
     error_message = "Must be one of iam_user, assumed_role, or federation_token."
   }
 }
