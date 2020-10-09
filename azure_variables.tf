@@ -60,7 +60,13 @@ variable "use_resource_group" {
 variable "azure_role" {
   type        = string
   default     = "Reader"
-  description = "Azure role to assigned to service principal. Must be one of Reader, Contributor, Owner"
+  description = "Azure role to assigned to service principal."
+
+  validation {
+    condition     = can(contains(["Reader", "Contributor", "Owner"], var.azure_role))
+    error_message = "The Azure role must be one of Reader, Contributor, Owner."
+  }
+
 }
 
 variable "resource_group_identifier" {

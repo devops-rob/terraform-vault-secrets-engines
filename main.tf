@@ -51,7 +51,6 @@ resource "vault_azure_secret_backend" "azure_secret_backend" {
   client_id     = var.azure_client_id
   client_secret = var.azure_client_secret
   environment   = var.azure_environment
-
 }
 
 resource "vault_azure_secret_backend_role" "azure_secret_backend_role" {

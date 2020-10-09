@@ -12,5 +12,5 @@ module "example_defaults" {
 
   use_resource_group             = false
   azure_secret_backend_role_name = "test_role"
-
+  azure_role = "tester"
 }
