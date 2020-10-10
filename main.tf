@@ -97,3 +97,15 @@ resource "vault_azure_secret_backend_role" "azure_secret_backend_role" {
 
   application_object_id = var.azure_app_id
 }
+
+resource "vault_consul_secret_backend" "consul" {
+  count = contains(var.secrets_engines, "consul") ? 1 : 0
+  path  = "consul"
+
+  address = var.consul_address
+  scheme  = local.scheme
+  token   = var.consul_token
+
+  default_lease_ttl_seconds = var.consul_default_lease
+  max_lease_ttl_seconds     = var.consul_max_lease
+}
