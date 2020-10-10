@@ -33,3 +33,32 @@ variable "consul_max_lease" {
   default     = 3600
   description = "Maximum lease for Consul secrets engine"
 }
+
+variable "consul_backend_role_name" {
+  type        = string
+  default     = null
+  description = "Name for Consul role"
+}
+
+variable "consul_policies" {
+  type        = list(string)
+  default     = null
+  description = "List of consul policies that will be attached to generated ACL tokens"
+}
+
+variable "consul_local_token" {
+  type        = bool
+  default     = false
+  description = "Specify if Consul ACL token should be kept locally."
+}
+
+variable "consul_token_type" {
+  type        = string
+  default     = "client"
+  description = "Consul token type"
+
+  validation {
+    condition     = can(contains(["Management", "Client"]))
+    error_message = "Must be one of Management or Client"
+  }
+}
