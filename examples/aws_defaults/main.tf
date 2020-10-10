@@ -8,4 +8,6 @@ module "example_defaults" {
 
   secrets_engines       = ["aws"]
   aws_backend_role_name = "test"
+
+  aws_iam_groups = ["test"]
 }

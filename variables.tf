@@ -1,12 +1,11 @@
 variable "secrets_engines" {
   type        = list(string)
-  default     = ["kv"]
+  default     = null
   description = "A list of secrets engines to enable"
 
   validation {
     condition     = can(contains(
     [
-      "kv",
       "aws",
       "azure",
       "gcp",
@@ -16,7 +15,7 @@ variable "secrets_engines" {
       "rabbitmq",
       "ssh"
     ], var.secrets_engines))
-    error_message = "Invalid secrets engines"
+    error_message = "Invalid secrets engines."
   }
 }
 
@@ -40,7 +39,7 @@ variable "seal_wrap" {
 
 variable "local_mount" {
   type        = bool
-  default     = false
+  default     = true
   description = "Boolean flag that can be explicitly set to true to enforce local mount in HA environment"
 }
 
