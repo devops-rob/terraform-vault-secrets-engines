@@ -3,9 +3,15 @@ provider "vault" {
   token   = "root"
 }
 
-module "transit_defaults" {
+module "consul_defaults" {
   source          = "../../"
   secrets_engines = ["consul"]
 
-  consul_token = "acl-token"
+  consul_token             = "acl-token"
+  consul_backend_role_name = "test"
+
+  consul_policies = [
+    "test-policy",
+    "test-policy-2"
+  ]
 }

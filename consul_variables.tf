@@ -54,11 +54,11 @@ variable "consul_local_token" {
 
 variable "consul_token_type" {
   type        = string
-  default     = "client"
+  default     = "Client"
   description = "Consul token type"
 
   validation {
-    condition     = can(contains(["Management", "Client"]))
-    error_message = "Must be one of Management or Client"
+    condition     = can(contains(["Management", "Client"], var.consul_token_type))
+    error_message = "Must be one of Management or Client."
   }
 }
