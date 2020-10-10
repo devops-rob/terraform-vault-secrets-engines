@@ -1,6 +1,6 @@
 variable "azure_subscription_id" {
   type        = string
-  default     = null
+  default     = "null"
   description = "Azure subscription ID"
 }
 

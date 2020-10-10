@@ -39,12 +39,17 @@ variable "aws_backend_role_name" {
 variable "aws_backend_role_cred_type" {
   type        = string
   default     = "iam_user"
-  description = "type of credential to be used when retrieving credentials from the role. Must be one of iam_user, assumed_role, or federation_token"
+  description = "type of credential to be used when retrieving credentials from the role."
 
-  //  validation {
-  //    condition     = ""
-  //    error_message = "Must be one of iam_user, assumed_role, or federation_token"
-  //  }
+  validation {
+    condition = can(contains(
+      [
+        "iam_user",
+        "assumed_role",
+        "federation_token"
+    ], var.aws_backend_role_cred_type))
+    error_message = "Invalid credential type. Must be one of iam_user, assumed_role, or federation_token."
+  }
 }
 
 variable "aws_role_arns" {
@@ -73,12 +78,12 @@ variable "aws_iam_groups" {
 
 variable "aws_sts_default_ttl" {
   type        = number
-  default     = 3600
+  default     = null
   description = "The default TTL in seconds for STS credentials. Valid only when credential_type is one of assumed_role or federation_token."
 }
 
 variable "aws_sts_max_ttl" {
   type        = number
-  default     = 3600
+  default     = null
   description = "The max allowed TTL in seconds for STS credentials (credentials TTL are capped to max_sts_ttl). Valid only when credential_type is one of assumed_role or federation_token."
 }

@@ -3,7 +3,7 @@ provider "vault" {
   token   = "root"
 }
 
-module "example_defaults" {
+module "azure_defaults" {
   source          = "../../"
   secrets_engines = ["azure"]
 
@@ -12,5 +12,5 @@ module "example_defaults" {
 
   use_resource_group             = false
   azure_secret_backend_role_name = "test_role"
-  azure_role = "tester"
+  azure_role                     = "tester"
 }
