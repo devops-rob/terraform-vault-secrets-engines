@@ -3,11 +3,10 @@ provider "vault" {
   token   = "root"
 }
 
-module "example_defaults" {
+module "aws_defaults" {
   source = "../../"
 
   secrets_engines       = ["aws"]
   aws_backend_role_name = "test"
-
-  aws_iam_groups = ["test"]
+  aws_iam_groups        = ["test"]
 }
