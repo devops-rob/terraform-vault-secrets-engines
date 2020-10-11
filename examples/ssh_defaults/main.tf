@@ -6,4 +6,8 @@ provider "vault" {
 module "ssh_defaults" {
   source          = "../../"
   secrets_engines = ["ssh"]
+
+  ssh_backend_role_name = "test"
+  ssh_key_type          = "otp"
+  ssh_default_user      = "test-user"
 }
