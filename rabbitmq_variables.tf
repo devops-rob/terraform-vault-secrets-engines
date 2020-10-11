@@ -65,7 +65,7 @@ variable "rabbitmq_configure_permissions" {
 }
 
 variable "rabbitmq_tags" {
-  type    = string
-  default = null
+  type        = string
+  default     = null
   description = "Comma separated list of Rabit MQ tags to assign to generated user"
 }
