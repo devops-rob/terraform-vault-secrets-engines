@@ -46,6 +46,6 @@ variable "gcp_bindings" {
     resource = string
     roles    = list(string)
   }))
-  description = "Bindings to create for this roleset. This can be specified multiple times for multiple bindings."
+  description = "Bindings to create for this roleset."
 }
 
