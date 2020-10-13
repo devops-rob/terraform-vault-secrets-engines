@@ -1,13 +1,13 @@
 variable "gcp_default_ttl" {
   type        = number
   default     = 3600
-  description = "Default TTL for GCP secrets backend"
+  description = "Default TTL for GCP secrets backend."
 }
 
 variable "gcp_maximum_ttl" {
   type        = number
   default     = 3600
-  description = "Maximum TTL for GCP secrets backend"
+  description = "Maximum TTL for GCP secrets backend."
 }
 
 variable "gcp_credentials" {
@@ -24,13 +24,13 @@ variable "gcp_project" {
 variable "gcp_roleset_name" {
   type        = string
   default     = null
-  description = "Name of the Roleset to create"
+  description = "Name of the Roleset to create."
 }
 
 variable "gcp_secret_type" {
   type        = string
   default     = "access_token"
-  description = "Type of secret generated for this role set. Accepted values: access_token, service_account_key"
+  description = "Type of secret generated for this role set. Accepted values: access_token, service_account_key."
 }
 
 variable "gcp_token_scopes" {
@@ -38,7 +38,7 @@ variable "gcp_token_scopes" {
   default = [
     "https://www.googleapis.com/auth/cloud-platform"
   ]
-  description = "List of OAuth scopes to assign to access_token secrets generated under this role set"
+  description = "List of OAuth scopes to assign to access_token secrets generated under this role set."
 }
 
 variable "gcp_bindings" {
