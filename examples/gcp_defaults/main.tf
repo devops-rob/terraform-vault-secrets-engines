@@ -3,21 +3,22 @@ provider "vault" {
   token   = "root"
 }
 
-locals {
-  project = "test"
+variable "project" {
+  default = "test"
 }
+
 module "gcp_defaults" {
   source = "../../"
 
   secrets_engines = ["gcp"]
 
-  gcp_project      = local.project
+  gcp_project      = var.project
   gcp_roleset_name = "test"
   gcp_credentials  = file("credentials.json")
 
   gcp_bindings = [
     {
-      resource = "//cloudresourcemanager.googleapis.com/projects/${local.project}"
+      resource = "//cloudresourcemanager.googleapis.com/projects/${var.project}"
       roles = [
         "roles/viewer"
       ]
