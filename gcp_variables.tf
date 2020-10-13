@@ -47,5 +47,6 @@ variable "gcp_bindings" {
     roles    = list(string)
   }))
   description = "Bindings to create for this roleset."
+  default = null
 }
 
