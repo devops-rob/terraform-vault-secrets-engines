@@ -188,3 +188,31 @@ resource "vault_ssh_secret_backend_role" "ssh" {
   default_user  = var.ssh_default_user
   key_id_format = var.ssh_key_id_format
 }
+
+resource "vault_gcp_secret_backend" "gcp" {
+  count = contains(var.secrets_engines, "gcp") ? 1 : 0
+  path  = "gcp"
+
+  default_lease_ttl_seconds = var.gcp_default_ttl
+  max_lease_ttl_seconds     = var.gcp_maximum_ttl
+  credentials               = var.gcp_credentials
+}
+
+resource "vault_gcp_secret_roleset" "gcp" {
+  count   = contains(var.secrets_engines, "gcp") ? 1 : 0
+  backend = vault_gcp_secret_backend.gcp[count.index].path
+
+  project = var.gcp_project
+  roleset = var.gcp_roleset_name
+
+  dynamic "binding" {
+    for_each = var.gcp_bindings
+    content {
+      resource = binding.value["resource"]
+      roles    = binding.value["roles"]
+    }
+  }
+
+  secret_type  = var.gcp_secret_type
+  token_scopes = var.gcp_token_scopes
+}
