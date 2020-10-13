@@ -4,7 +4,8 @@ provider "vault" {
 }
 
 variable "project" {
-  default = "test"
+  default     = "test"
+  description = "GCP project name"
 }
 
 module "gcp_defaults" {
