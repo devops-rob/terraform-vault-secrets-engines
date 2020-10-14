@@ -30,6 +30,5 @@ module "transit_defaults" {
       min_decryption_version = 1
       min_encryption_version = 1
     }
-
   ]
 }
