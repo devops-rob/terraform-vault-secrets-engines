@@ -1,7 +1,7 @@
 variable "transit_cache_size" {
   type        = number
   default     = 0
-  description = "The number of cache entries. 0 means unlimited"
+  description = "The number of cache entries. 0 means unlimited."
 }
 
 variable "transit_keys" {
