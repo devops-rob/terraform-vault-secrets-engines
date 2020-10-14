@@ -43,6 +43,34 @@ resource "vault_mount" "transit" {
   description = "The ${element(var.secrets_engines, count.index)} secrets engine is mounted at the /${element(var.secrets_engines, count.index)} path"
 }
 
+resource "vault_transit_secret_cache_config" "transit" {
+  count   = contains(var.secrets_engines, "transit") ? 1 : 0
+  backend = vault_mount.transit[count.index].path
+  size    = var.transit_cache_size
+}
+
+resource "vault_transit_secret_backend_key" "transit" {
+  for_each = {
+    for key in var.transit_keys :
+    key.name => key
+  }
+
+  backend = "transit"
+
+  name                   = each.value["name"]
+  type                   = each.value["type"]
+  deletion_allowed       = each.value["deletion_allowed"]
+  derived                = each.value["derived"]
+  convergent_encryption  = each.value["convergent_encryption"]
+  exportable             = each.value["exportable"]
+  allow_plaintext_backup = each.value["allow_plaintext_backup"]
+  min_decryption_version = each.value["min_decryption_version"]
+  min_encryption_version = each.value["min_encryption_version"]
+
+  depends_on = [
+    vault_mount.transit
+  ]
+}
 resource "vault_aws_secret_backend" "aws_backend" {
   count = contains(var.secrets_engines, "aws") ? 1 : 0
 
