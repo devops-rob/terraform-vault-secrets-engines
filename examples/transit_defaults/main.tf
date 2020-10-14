@@ -20,7 +20,7 @@ module "transit_defaults" {
       min_encryption_version = 1
     },
     {
-      name                   = "test-key-22"
+      name                   = "test-key-2"
       allow_plaintext_backup = false
       convergent_encryption  = false
       exportable             = false

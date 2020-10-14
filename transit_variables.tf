@@ -19,7 +19,3 @@ variable "transit_keys" {
   default = null
   description = "A list of transit key objects."
 }
-
-locals {
-  keys = var.transit_keys
-}
