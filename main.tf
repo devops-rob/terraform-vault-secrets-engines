@@ -30,10 +30,256 @@ resource "vault_mount" "cassandra" {
 
 
 resource "vault_database_secret_backend_connection" "cassandra" {
-  count = contains(var.databases, "cassandra") ? 1 : 0
+  count   = contains(var.databases, "cassandra") ? 1 : 0
   backend = vault_mount.cassandra[count.index].path
-  name = ""
+
+  name                     = "cassandra"
+  allowed_roles            = var.cassandra_allowed_roles
+  root_rotation_statements = var.cassandra_root_rotation_statements
+
+  cassandra {
+    hosts    = var.cassandra_hosts
+    username = var.cassandra_username
+    password = var.cassandra_password
+
+    tls          = var.cassandra_tls
+    insecure_tls = var.cassandra_insecure_tls
+    pem_bundle   = var.cassandra_pem_bundle
+    pem_json     = var.cassandra_pem_json
+
+    protocol_version = var.cassandra_protocol_version
+    connect_timeout  = ""
+  }
+
+  verify_connection = var.cassandra_verify_connection
 }
+
+resource "vault_mount" "mongodb" {
+  count = contains(var.databases, "mongodb") ? 1 : 0
+  path  = var.mongodb_path
+  type  = "db"
+
+  default_lease_ttl_seconds = var.mongodb_default_lease
+  max_lease_ttl_seconds     = var.mongodb_max_lease
+
+  seal_wrap               = var.mongodb_seal_wrapping
+  local                   = var.mongodb_local_mount
+  external_entropy_access = var.mongodb_external_entropy_access
+
+  description = "The database secrets engine for MongoDB is mounted at the ${element(var.secrets_engines, count.index)}/ path"
+}
+
+resource "vault_database_secret_backend_connection" "mongodb" {
+  count   = contains(var.databases, "mongodb") ? 1 : 0
+  backend = vault_mount.mongodb[count.index].path
+
+  name                     = "mongodb"
+  allowed_roles            = var.mongodb_allowed_roles
+  root_rotation_statements = var.mongodb_root_rotation_statements
+
+  mongodb {
+    connection_url          = var.mongodb_connection_url
+    max_connection_lifetime = var.mongodb_max_connection_lifetime
+    max_idle_connections    = var.mongodb_max_idle_connections
+    max_open_connections    = var.mongodb_max_open_connections
+  }
+  verify_connection = var.mongodb_verify_connection
+}
+
+resource "vault_mount" "hana" {
+  count = contains(var.databases, "hana") ? 1 : 0
+  path  = var.hana_path
+  type  = "db"
+
+  default_lease_ttl_seconds = var.hana_default_lease
+  max_lease_ttl_seconds     = var.hana_max_lease
+
+  seal_wrap               = var.hana_seal_wrapping
+  local                   = var.hana_local_mount
+  external_entropy_access = var.hana_external_entropy_access
+
+  description = "The database secrets engine for hana is mounted at the ${element(var.secrets_engines, count.index)}/ path"
+}
+
+resource "vault_database_secret_backend_connection" "hana" {
+  count   = contains(var.databases, "hana") ? 1 : 0
+  backend = vault_mount.hana[count.index].path
+
+  name                     = "hana"
+  allowed_roles            = var.hana_allowed_roles
+  root_rotation_statements = var.hana_root_rotation_statements
+
+  hana {
+    connection_url          = var.hana_connection_url
+    max_connection_lifetime = var.hana_max_connection_lifetime
+    max_idle_connections    = var.hana_max_idle_connections
+    max_open_connections    = var.hana_max_open_connections
+  }
+  verify_connection = var.hana_verify_connection
+}
+
+resource "vault_mount" "mssql" {
+  count = contains(var.databases, "mssql") ? 1 : 0
+  path  = var.mssql_path
+  type  = "db"
+
+  default_lease_ttl_seconds = var.mssql_default_lease
+  max_lease_ttl_seconds     = var.mssql_max_lease
+
+  seal_wrap               = var.mssql_seal_wrapping
+  local                   = var.mssql_local_mount
+  external_entropy_access = var.mssql_external_entropy_access
+
+  description = "The database secrets engine for mssql is mounted at the ${element(var.secrets_engines, count.index)}/ path"
+}
+
+resource "vault_database_secret_backend_connection" "mssql" {
+  count   = contains(var.databases, "mssql") ? 1 : 0
+  backend = vault_mount.mssql[count.index].path
+
+  name                     = "mssql"
+  allowed_roles            = var.mssql_allowed_roles
+  root_rotation_statements = var.mssql_root_rotation_statements
+
+  mssql {
+    connection_url          = var.mssql_connection_url
+    max_connection_lifetime = var.mssql_max_connection_lifetime
+    max_idle_connections    = var.mssql_max_idle_connections
+    max_open_connections    = var.mssql_max_open_connections
+  }
+  verify_connection = var.mssql_verify_connection
+}
+
+resource "vault_mount" "mysql" {
+  count = contains(var.databases, "mysql") ? 1 : 0
+  path  = var.mysql_path
+  type  = "db"
+
+  default_lease_ttl_seconds = var.mysql_default_lease
+  max_lease_ttl_seconds     = var.mysql_max_lease
+
+  seal_wrap               = var.mysql_seal_wrapping
+  local                   = var.mysql_local_mount
+  external_entropy_access = var.mysql_external_entropy_access
+
+  description = "The database secrets engine for mysql is mounted at the ${element(var.secrets_engines, count.index)}/ path"
+}
+
+resource "vault_database_secret_backend_connection" "mysql" {
+  count   = contains(var.databases, "mysql") ? 1 : 0
+  backend = vault_mount.mysql[count.index].path
+
+  name                     = "mysql"
+  allowed_roles            = var.mysql_allowed_roles
+  root_rotation_statements = var.mysql_root_rotation_statements
+
+  mysql {
+    connection_url          = var.mysql_connection_url
+    max_connection_lifetime = var.mysql_max_connection_lifetime
+    max_idle_connections    = var.mysql_max_idle_connections
+    max_open_connections    = var.mysql_max_open_connections
+  }
+  verify_connection = var.mysql_verify_connection
+}
+
+resource "vault_mount" "postgresql" {
+  count = contains(var.databases, "postgresql") ? 1 : 0
+  path  = var.postgresql_path
+  type  = "db"
+
+  default_lease_ttl_seconds = var.postgresql_default_lease
+  max_lease_ttl_seconds     = var.postgresql_max_lease
+
+  seal_wrap               = var.postgresql_seal_wrapping
+  local                   = var.postgresql_local_mount
+  external_entropy_access = var.postgresql_external_entropy_access
+
+  description = "The database secrets engine for postgresql is mounted at the ${element(var.secrets_engines, count.index)}/ path"
+}
+
+resource "vault_database_secret_backend_connection" "postgresql" {
+  count   = contains(var.databases, "postgresql") ? 1 : 0
+  backend = vault_mount.postgresql[count.index].path
+
+  name                     = "postgresql"
+  allowed_roles            = var.postgresql_allowed_roles
+  root_rotation_statements = var.postgresql_root_rotation_statements
+
+  postgresql {
+    connection_url          = var.postgresql_connection_url
+    max_connection_lifetime = var.postgresql_max_connection_lifetime
+    max_idle_connections    = var.postgresql_max_idle_connections
+    max_open_connections    = var.postgresql_max_open_connections
+  }
+  verify_connection = var.postgresql_verify_connection
+}
+
+resource "vault_mount" "oracle" {
+  count = contains(var.databases, "oracle") ? 1 : 0
+  path  = var.oracle_path
+  type  = "db"
+
+  default_lease_ttl_seconds = var.oracle_default_lease
+  max_lease_ttl_seconds     = var.oracle_max_lease
+
+  seal_wrap               = var.oracle_seal_wrapping
+  local                   = var.oracle_local_mount
+  external_entropy_access = var.oracle_external_entropy_access
+
+  description = "The database secrets engine for oracle is mounted at the ${element(var.secrets_engines, count.index)}/ path"
+}
+
+resource "vault_database_secret_backend_connection" "oracle" {
+  count   = contains(var.databases, "oracle") ? 1 : 0
+  backend = vault_mount.oracle[count.index].path
+
+  name                     = "oracle"
+  allowed_roles            = var.oracle_allowed_roles
+  root_rotation_statements = var.oracle_root_rotation_statements
+
+  oracle {
+    connection_url          = var.oracle_connection_url
+    max_connection_lifetime = var.oracle_max_connection_lifetime
+    max_idle_connections    = var.oracle_max_idle_connections
+    max_open_connections    = var.oracle_max_open_connections
+  }
+  verify_connection = var.oracle_verify_connection
+}
+
+resource "vault_mount" "elasticsearch" {
+  count = contains(var.databases, "elasticsearch") ? 1 : 0
+  path  = var.elasticsearch_path
+  type  = "db"
+
+  default_lease_ttl_seconds = var.elasticsearch_default_lease
+  max_lease_ttl_seconds     = var.elasticsearch_max_lease
+
+  seal_wrap               = var.elasticsearch_seal_wrapping
+  local                   = var.elasticsearch_local_mount
+  external_entropy_access = var.elasticsearch_external_entropy_access
+
+  description = "The database secrets engine for elasticsearch is mounted at the ${element(var.secrets_engines, count.index)}/ path"
+}
+
+resource "vault_database_secret_backend_connection" "elasticsearch" {
+  count   = contains(var.databases, "elasticsearch") ? 1 : 0
+  backend = vault_mount.elasticsearch[count.index].path
+
+  name                     = "elasticsearch"
+  allowed_roles            = var.elasticsearch_allowed_roles
+  root_rotation_statements = var.elasticsearch_root_rotation_statements
+
+  elasticsearch {
+    url      = var.elasticsearch_url
+    username = var.elasticsearch_username
+    password = var.elasticsearch_password
+  }
+  verify_connection = var.elasticsearch_verify_connection
+}
+
+
+
+
 
 resource "vault_mount" "transit" {
   count = contains(var.secrets_engines, "transit") ? 1 : 0
