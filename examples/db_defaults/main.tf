@@ -6,4 +6,8 @@ provider "vault" {
 module "db_defaults" {
   source          = "../../"
   secrets_engines = ["db"]
+
+  databases = [
+    "cassandra"
+  ]
 }

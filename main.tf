@@ -13,19 +13,26 @@ resource "vault_mount" "ssh" {
   description = "The ssh secrets engine is mounted at the ssh/ path"
 }
 
-resource "vault_mount" "db" {
-  count = contains(var.secrets_engines, "db") ? 1 : 0
-  path  = "db"
+resource "vault_mount" "cassandra" {
+  count = contains(var.databases, "cassandra") ? 1 : 0
+  path  = var.cassandra_path
   type  = "db"
 
-  default_lease_ttl_seconds = var.default_lease
-  max_lease_ttl_seconds     = var.max_lease
+  default_lease_ttl_seconds = var.cassandra_default_lease
+  max_lease_ttl_seconds     = var.cassandra_max_lease
 
-  seal_wrap               = var.seal_wrap
-  local                   = var.local_mount
-  external_entropy_access = var.external_entropy_access
+  seal_wrap               = var.cassandra_seal_wrapping
+  local                   = var.cassandra_local_mount
+  external_entropy_access = var.cassandra_external_entropy_access
 
-  description = "The ${element(var.secrets_engines, count.index)} secrets engine is mounted at the /${element(var.secrets_engines, count.index)} path"
+  description = "The database secrets engine for Cassandra is mounted at the ${element(var.secrets_engines, count.index)}/ path"
+}
+
+
+resource "vault_database_secret_backend_connection" "cassandra" {
+  count = contains(var.databases, "cassandra") ? 1 : 0
+  backend = vault_mount.cassandra[count.index].path
+  name = ""
 }
 
 resource "vault_mount" "transit" {
