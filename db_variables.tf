@@ -9,7 +9,7 @@ variable "db_roles" {
     backend               = string
     name                  = string
     db_name               = string
-    creation_statements    = list(string)
+    creation_statements   = list(string)
     revocation_statements = list(string)
     renew_statements      = list(string)
     rollback_statements   = list(string)
