@@ -41,7 +41,7 @@ variable "elasticsearch_allowed_roles" {
 }
 
 variable "elasticsearch_root_rotation_statements" {
-  type        = string
+  type        = list(string)
   default     = null
   description = "A list of database statements to be executed to rotate the root user's credentials."
 }

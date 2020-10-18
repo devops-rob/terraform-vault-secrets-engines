@@ -48,7 +48,7 @@ resource "vault_database_secret_backend_connection" "cassandra" {
     pem_json     = var.cassandra_pem_json
 
     protocol_version = var.cassandra_protocol_version
-    connect_timeout  = ""
+    connect_timeout  = var.cassandra_connect_timeout
   }
 
   verify_connection = var.cassandra_verify_connection
@@ -121,7 +121,7 @@ resource "vault_database_secret_backend_connection" "hana" {
 resource "vault_mount" "mssql" {
   count = contains(var.databases, "mssql") ? 1 : 0
   path  = var.mssql_path
-  type  = "db"
+  type  = "database"
 
   default_lease_ttl_seconds = var.mssql_default_lease
   max_lease_ttl_seconds     = var.mssql_max_lease
@@ -153,7 +153,7 @@ resource "vault_database_secret_backend_connection" "mssql" {
 resource "vault_mount" "mysql" {
   count = contains(var.databases, "mysql") ? 1 : 0
   path  = var.mysql_path
-  type  = "db"
+  type  = "database"
 
   default_lease_ttl_seconds = var.mysql_default_lease
   max_lease_ttl_seconds     = var.mysql_max_lease
@@ -278,7 +278,24 @@ resource "vault_database_secret_backend_connection" "elasticsearch" {
 }
 
 
+resource "vault_database_secret_backend_role" "roles" {
+  for_each = {
+    for role in var.db_roles :
+    role.name => role
+  }
 
+  backend = each.value["backend"]
+  db_name = each.value["db_name"]
+  name    = each.value["name"]
+
+  creation_statements   = each.value["creation_statements"]
+  revocation_statements = each.value["revocation_statements"]
+  renew_statements      = each.value["renew_statements"]
+  rollback_statements   = each.value["rollback_statements"]
+
+  default_ttl = each.value["default_ttl"]
+  max_ttl     = each.value["max_ttl"]
+}
 
 
 resource "vault_mount" "transit" {
