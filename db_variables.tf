@@ -17,6 +17,6 @@ variable "db_roles" {
     max_ttl               = number
   }))
   default     = []
-  description = ""
+  description = "A list of database role objects."
 }
 
