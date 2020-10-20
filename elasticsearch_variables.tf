@@ -54,7 +54,7 @@ variable "elasticsearch_verify_connection" {
 
 variable "elasticsearch_url" {
   type        = string
-  default     = "localhost:9300"
+  default     = "http://localhost:9200"
   description = "A URL containing connection information."
 }
 
