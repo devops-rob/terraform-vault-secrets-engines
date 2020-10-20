@@ -297,6 +297,20 @@ resource "vault_database_secret_backend_role" "roles" {
   max_ttl     = each.value["max_ttl"]
 }
 
+resource "vault_database_secret_backend_static_role" "roles" {
+  for_each = {
+    for role in var.db_static_roles :
+    role.name => role
+  }
+
+  backend = each.value["backend"]
+  db_name = each.value["db_name"]
+  name    = each.value["name"]
+
+  rotation_statements = each.value["rotation_statements"]
+  rotation_period     = each.value["rotation_period"]
+  username            = each.value["username"]
+}
 
 resource "vault_mount" "transit" {
   count = contains(var.secrets_engines, "transit") ? 1 : 0

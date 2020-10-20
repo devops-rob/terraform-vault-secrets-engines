@@ -20,3 +20,15 @@ variable "db_roles" {
   description = "A list of database role objects."
 }
 
+variable "db_static_roles" {
+  type = list(object({
+    backend             = string
+    name                = string
+    db_name             = string
+    username            = string
+    rotation_statements = list(string)
+    rotation_period     = number
+  }))
+  default     = []
+  description = "A list of database static role objects."
+}

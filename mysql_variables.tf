@@ -54,7 +54,7 @@ variable "mysql_verify_connection" {
 
 variable "mysql_connection_url" {
   type        = string
-  default     = "localhost:3306"
+  default     = "mysql://root:root@localhost:3306/database"
   description = "A URL containing connection information."
 }
 
