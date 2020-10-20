@@ -54,7 +54,9 @@ variable "cassandra_verify_connection" {
 
 variable "cassandra_hosts" {
   type    = list(string)
-  default = null
+  default = "127.0.0.1"
+  description = "A URL containing connection information."
+
 }
 
 variable "cassandra_username" {
@@ -95,7 +97,7 @@ variable "cassandra_pem_json" {
 
 variable "cassandra_protocol_version" {
   type        = number
-  default     = 3
+  default     = 4
   description = "The CQL protocol version to use."
 }
 
