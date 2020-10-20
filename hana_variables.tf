@@ -54,7 +54,7 @@ variable "hana_verify_connection" {
 
 variable "hana_connection_url" {
   type        = string
-  default     = "localhost:30015"
+  default     = "hdb://admin:myPassword@localhost:30015"
   description = "A URL containing connection information."
 }
 
