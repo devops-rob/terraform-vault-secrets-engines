@@ -54,7 +54,7 @@ variable "mssql_verify_connection" {
 
 variable "mssql_connection_url" {
   type        = string
-  default     = "localhost:1433"
+  default     = "sqlserver://admin:myPassword@localhost:1433"
   description = "A URL containing connection information."
 }
 
