@@ -54,7 +54,7 @@ variable "mongodb_verify_connection" {
 
 variable "mongodb_connection_url" {
   type        = string
-  default     = "localhost:27017"
+  default     = "mongodb://admin:mypassword@localhost:27017/admin?tls=false"
   description = "A URL containing connection information."
 }
 
