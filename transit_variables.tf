@@ -16,6 +16,6 @@ variable "transit_keys" {
     min_decryption_version = number
     min_encryption_version = number
   }))
-  default = null
+  default = []
   description = "A list of transit key objects."
 }

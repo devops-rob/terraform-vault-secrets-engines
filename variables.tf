@@ -13,7 +13,8 @@ variable "secrets_engines" {
       "pki",
       "transit",
       "rabbitmq",
-      "ssh"
+      "ssh",
+      "db"
     ], var.secrets_engines))
     error_message = "Invalid secrets engines."
   }
