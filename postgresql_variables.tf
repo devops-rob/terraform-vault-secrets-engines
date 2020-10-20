@@ -54,7 +54,7 @@ variable "postgresql_verify_connection" {
 
 variable "postgresql_connection_url" {
   type        = string
-  default     = "localhost:5432"
+  default     = "postgresql://postgres:myPassword@localhost:5432/postgres?sslmode=disable"
   description = "A URL containing connection information."
 }
 
