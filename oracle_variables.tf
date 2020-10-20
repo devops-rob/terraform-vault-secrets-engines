@@ -54,7 +54,7 @@ variable "oracle_verify_connection" {
 
 variable "oracle_connection_url" {
   type        = string
-  default     = "localhost:1521"
+  default     = "admin:myPassword@localhost:1521/OraDoc.localhost"
   description = "A URL containing connection information."
 }
 
