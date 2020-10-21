@@ -1,3 +1,33 @@
+resource "vault_mount" "pki" {
+  for_each = {
+    for mount in var.pki_backend_maps :
+        mount.path => mount
+  }
+
+//  count = length(var.pki_backends)
+  path  = each.value["path"]
+  type  = "pki"
+
+
+  default_lease_ttl_seconds = each.value["default_lease_ttl_seconds"]
+  max_lease_ttl_seconds     = each.value["max_lease_ttl_seconds"]
+
+  seal_wrap               = each.value["seal_wrap"]
+  local                   = each.value["local"]
+  external_entropy_access = each.value["external_entropy_access"]
+
+  description = "PKI secrets backend environment for ${each.value["path"]} environmet"
+
+}
+
+resource "vault_pki_secret_backend_config_ca" "pki" {
+  count = length(var.pki_backends)
+
+  backend = element(var.pki_backends, count.index)
+  pem_bundle = ""
+}
+
+
 resource "vault_mount" "ssh" {
   count = contains(var.secrets_engines, "ssh") ? 1 : 0
   path  = "ssh"
