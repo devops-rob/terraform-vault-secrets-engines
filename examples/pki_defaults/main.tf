@@ -15,6 +15,7 @@ module "pki_defaults" {
       seal_wrap                 = false
       local                     = true
       external_entropy_access   = false
+      pem_bundle                = "some-string"
     }
   ]
 }

@@ -1,12 +1,11 @@
 resource "vault_mount" "pki" {
   for_each = {
     for mount in var.pki_backend_maps :
-        mount.path => mount
+    mount.path => mount
   }
 
-//  count = length(var.pki_backends)
-  path  = each.value["path"]
-  type  = "pki"
+  path = each.value["path"]
+  type = "pki"
 
 
   default_lease_ttl_seconds = each.value["default_lease_ttl_seconds"]
@@ -21,10 +20,13 @@ resource "vault_mount" "pki" {
 }
 
 resource "vault_pki_secret_backend_config_ca" "pki" {
-  count = length(var.pki_backends)
+  for_each = {
+    for mount in var.pki_backend_maps :
+    mount.path => mount
+  }
 
-  backend = element(var.pki_backends, count.index)
-  pem_bundle = ""
+  backend    = each.value["path"]
+  pem_bundle = each.value["pem_bundle"]
 }
 
 
