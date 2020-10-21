@@ -44,7 +44,10 @@ variable "pki_backend_maps" {
     local                     = bool
     external_entropy_access   = bool
     pem_bundle                = string
+    issuing_certificates      = list(string)
+    crl_distribution_points   = list(string)
+    ocsp_servers              = list(string)
   }))
-  default = []
+  default     = []
   description = "A list of PKI objects."
 }

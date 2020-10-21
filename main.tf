@@ -29,6 +29,17 @@ resource "vault_pki_secret_backend_config_ca" "pki" {
   pem_bundle = each.value["pem_bundle"]
 }
 
+resource "vault_pki_secret_backend_config_urls" "pki" {
+  for_each = {
+    for mount in var.pki_backend_maps :
+    mount.path => mount
+  }
+
+  backend                 = each.value["path"]
+  issuing_certificates    = each.value["issuing_certificates"]
+  crl_distribution_points = each.value["crl_distribution_points"]
+  ocsp_servers            = each.value["ocsp_servers"]
+}
 
 resource "vault_mount" "ssh" {
   count = contains(var.secrets_engines, "ssh") ? 1 : 0

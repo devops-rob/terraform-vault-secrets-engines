@@ -15,7 +15,12 @@ module "pki_defaults" {
       seal_wrap                 = false
       local                     = true
       external_entropy_access   = false
-      pem_bundle                = "some-string"
+      pem_bundle                = file("${path.module}/pem-bundle.txt")
+      issuing_certificates = [
+        "http://127.0.0.1:8200/v1/pki/ca"
+      ]
+      crl_distribution_points = []
+      ocsp_servers            = []
     }
   ]
 }
