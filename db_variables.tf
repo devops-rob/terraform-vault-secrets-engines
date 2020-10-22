@@ -1,6 +1,6 @@
 variable "databases" {
   type        = list(string)
-  default     = null
+  default     = []
   description = "List of database secrets engines to enable."
 }
 

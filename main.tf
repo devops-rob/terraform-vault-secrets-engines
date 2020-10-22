@@ -1,3 +1,108 @@
+resource "vault_mount" "pki" {
+  for_each = {
+    for mount in var.pki_backend_maps :
+    mount.path => mount
+  }
+
+  path = each.value["path"]
+  type = "pki"
+
+
+  default_lease_ttl_seconds = each.value["default_lease_ttl_seconds"]
+  max_lease_ttl_seconds     = each.value["max_lease_ttl_seconds"]
+
+  seal_wrap               = each.value["seal_wrap"]
+  local                   = each.value["local"]
+  external_entropy_access = each.value["external_entropy_access"]
+
+  description = "PKI secrets backend environment for ${each.value["path"]} environmet"
+
+}
+
+resource "vault_pki_secret_backend_config_ca" "pki" {
+  for_each = {
+    for mount in var.pki_backend_maps :
+    mount.path => mount
+  }
+
+  backend    = each.value["path"]
+  pem_bundle = each.value["pem_bundle"]
+
+  depends_on = [
+    vault_mount.pki
+  ]
+}
+
+resource "vault_pki_secret_backend_config_urls" "pki" {
+  for_each = {
+    for mount in var.pki_backend_maps :
+    mount.path => mount
+  }
+
+  backend                 = each.value["path"]
+  issuing_certificates    = each.value["issuing_certificates"]
+  crl_distribution_points = each.value["crl_distribution_points"]
+  ocsp_servers            = each.value["ocsp_servers"]
+
+  depends_on = [
+    vault_mount.pki
+  ]
+
+}
+
+resource "vault_pki_secret_backend_role" "pki" {
+  for_each = {
+    for role in var.pki_roles :
+    role.role_name => role
+  }
+
+  backend = each.value["backend"]
+  name    = each.value["role_name"]
+
+  allowed_domains  = each.value["allowed_domains"]
+  allowed_uri_sans = each.value["allowed_uri_sans"]
+
+  allow_localhost    = each.value["allow_localhost"]
+  allow_bare_domains = each.value["allow_bare_domains"]
+  allow_subdomains   = each.value["allow_subdomains"]
+  allow_glob_domains = each.value["allow_glob_domains"]
+  allow_any_name     = each.value["allow_any_name"]
+  enforce_hostnames  = each.value["enforce_hostnames"]
+  allow_ip_sans      = each.value["allow_ip_sans"]
+
+  server_flag           = each.value["server_flag"]
+  client_flag           = each.value["client_flag"]
+  code_signing_flag     = each.value["code_signing_flag"]
+  email_protection_flag = each.value["email_protection_flag"]
+
+  key_type      = each.value["key_type"]
+  key_bits      = each.value["key_bits"]
+  ext_key_usage = each.value["ext_key_usage"]
+  key_usage     = each.value["key_usage"]
+
+  use_csr_common_name = each.value["use_csr_common_name"]
+  use_csr_sans        = each.value["use_csr_sans"]
+
+  ou             = each.value["ou"]
+  organization   = each.value["organization"]
+  country        = each.value["country"]
+  locality       = each.value["locality"]
+  province       = each.value["province"]
+  street_address = each.value["street_address"]
+  postal_code    = each.value["postal_code"]
+
+  generate_lease = each.value["generate_lease"]
+  no_store       = each.value["no_store"]
+  require_cn     = each.value["require_cn"]
+
+  policy_identifiers = each.value["policy_identifiers"]
+
+  depends_on = [
+    vault_mount.pki
+  ]
+
+}
+
 resource "vault_mount" "ssh" {
   count = contains(var.secrets_engines, "ssh") ? 1 : 0
   path  = "ssh"
