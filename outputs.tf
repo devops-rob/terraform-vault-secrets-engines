@@ -33,3 +33,8 @@ output "oracle_mount_accessor" {
 output "elasticsearch_mount_accessor" {
   value = vault_mount.elasticsearch[*].accessor
 }
+
+output "gcp_role_set_service_account_email" {
+  value = vault_gcp_secret_roleset.gcp[*].service_account_email
+}
+
