@@ -14,8 +14,9 @@ module "gcp_defaults" {
   secrets_engines = ["gcp"]
 
   gcp_project      = var.project
-  gcp_roleset_name = "test"
+  gcp_roleset_name = "key-role"
   gcp_credentials  = file("credentials.json")
+  gcp_secret_type  = "service_account_key"
 
   gcp_bindings = [
     {
