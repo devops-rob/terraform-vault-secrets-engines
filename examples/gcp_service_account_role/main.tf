@@ -4,7 +4,7 @@ provider "vault" {
 }
 
 variable "project" {
-  default     = "vault-test"
+  default     = "test"
   description = "GCP project name"
 }
 
@@ -14,8 +14,9 @@ module "gcp_defaults" {
   secrets_engines = ["gcp"]
 
   gcp_project      = var.project
-  gcp_roleset_name = "oauth-role"
+  gcp_roleset_name = "key-role"
   gcp_credentials  = file("credentials.json")
+  gcp_secret_type  = "service_account_key"
 
   gcp_bindings = [
     {

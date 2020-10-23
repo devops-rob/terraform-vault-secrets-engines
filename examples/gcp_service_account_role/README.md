@@ -1,11 +1,11 @@
-# GCP Secrets Engine with OAuth2 example
+# GCP Secrets Engine with Service Account example
 
 ### Overview
-In this example, the module will be used to configure the GCP secrets engine with a role that dynamically provision OAuth2 tokens for GCP.
+In this example, the module will be used to configure the GCP secrets engine with a role that dynamically provision service account keys for GCP.
 
 ### Example use case
 
-Configuring the GCP secrets engine to issue OAuth2 tokens is useful when building a platform that will be required to access Google Cloud resources.  For more information about OAuth2 and how to implement different workflows with it, refer to this [beginners guide.](https://medium.com/google-cloud/understanding-oauth2-and-building-a-basic-authorization-server-of-your-own-a-beginners-guide-cf7451a16f66) There are some [things to note](https://www.vaultproject.io/docs/secrets/gcp#things-to-note) when deciding with to use service accounts or OAuth tokens.
+Service accounts are good for systems that need to access and manage GCP resources.  This could be a CI/CD system for example.  this module itself uses a service account for Vault to authenticate against GCP in order to create and manage dynamically generated service accounts.  There are some [things to note](https://www.vaultproject.io/docs/secrets/gcp#things-to-note) when deciding with to use service accounts or OAuth tokens.
 
 ### GCP Requirements
 
@@ -39,5 +39,5 @@ terraform apply .tfplan
 To test the secrets engine is working as expected, run the following command as an authenticated Vault user:
 
 ```shell script
-vault read gcp/token/oauth-role
+vault read gcp/key/key-role
 ```
