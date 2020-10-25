@@ -49,19 +49,19 @@ variable "rabbitmq_vhost" {
 variable "rabbitmq_read_permissions" {
   type        = string
   default     = ""
-  description = ""
+  description = "List of resources to grant read permissions to."
 }
 
 variable "rabbitmq_write_permissions" {
   type        = string
   default     = ""
-  description = ""
+  description = "List of resources to grant write permissions to."
 }
 
 variable "rabbitmq_configure_permissions" {
   type        = string
   default     = ""
-  description = ""
+  description = "List of resources to grant configure permissions to."
 }
 
 variable "rabbitmq_tags" {

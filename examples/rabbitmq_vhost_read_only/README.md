@@ -6,7 +6,7 @@ In this example, the module will be used to enable and configure the RabbitMQ se
 
 ### Example use case
 
-For cases where, engineers or applications require read-only access to resources in a specific virtual host. For more information about Virtual Hosts, refer to the [Logical and Physical Separation documentation.](https://www.rabbitmq.com/vhosts.html#logical-separation)
+For cases where applications require read-only access to resources in a specific virtual host. Read permissions are generally used for message consumers. The permissions model is detailed in the [Authorisation documentation.](https://www.rabbitmq.com/access-control.html#authorisation) For more information about Virtual Hosts, refer to the [Logical and Physical Separation documentation.](https://www.rabbitmq.com/vhosts.html#logical-separation)
 
 ### RabbitMQ Requirements
 
@@ -16,7 +16,7 @@ For more information about RabbitMQ Access and Permissions, refer to the [rabbit
 
 ### Usage
 
-The first step is to export the environment variables that contain the Vault token and RabbitMQ credentials.  Execute the following commands, replacing the variable values to match your environment:
+Export the environment variables that contain the Vault token and RabbitMQ credentials.  Execute the following commands, replacing the variable values to match your environment:
 
 ```shell script
 export TF_VAR_vault_token=root
