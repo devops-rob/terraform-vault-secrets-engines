@@ -48,19 +48,19 @@ variable "rabbitmq_vhost" {
 
 variable "rabbitmq_read_permissions" {
   type        = string
-  default     = ".*"
+  default     = ""
   description = ""
 }
 
 variable "rabbitmq_write_permissions" {
   type        = string
-  default     = ".*"
+  default     = ""
   description = ""
 }
 
 variable "rabbitmq_configure_permissions" {
   type        = string
-  default     = ".*"
+  default     = ""
   description = ""
 }
 

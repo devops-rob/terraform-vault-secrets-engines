@@ -6,7 +6,7 @@ In this example, the module will be used to enable and configure the RabbitMQ se
 
 ### Example use case
 
-In cases where engineers require Just-In-Time management access to RabbitMQ to administer user management, Configuring the the RabbitMQ secrets engine with this example will allow authenticated and authorised Vault users to obtain temporary RabbitMQ credentials.
+In cases where engineers require Just-In-Time management access to RabbitMQ to administer the platform, configuring the RabbitMQ secrets engine with this example will allow authenticated and authorised Vault users to obtain temporary RabbitMQ credentials.
 
 ### RabbitMQ Requirements
 
@@ -16,7 +16,7 @@ For more information about RabbitMQ Access and Permissions, refer to the [rabbit
 
 ### Usage
 
-The first step is to export the environment variables that contain the Vault token and RabbitMQ credentials.  Execute the following commands, replacing the variable values to match your environment:
+Export the environment variables that contain the Vault token and RabbitMQ credentials.  Execute the following commands, replacing the variable values to match your environment:
 
 ```shell script
 export TF_VAR_vault_token=root
