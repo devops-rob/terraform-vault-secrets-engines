@@ -1,6 +1,6 @@
 variable "rabbitmq_uri" {
   type        = string
-  default     = "http://localhost:5672"
+  default     = "http://localhost:15672"
   description = "Connection URI for RabbitMQ instance"
 }
 
@@ -48,24 +48,24 @@ variable "rabbitmq_vhost" {
 
 variable "rabbitmq_read_permissions" {
   type        = string
-  default     = ".*"
-  description = ""
+  default     = ""
+  description = "List of resources to grant read permissions to."
 }
 
 variable "rabbitmq_write_permissions" {
   type        = string
-  default     = ".*"
-  description = ""
+  default     = ""
+  description = "List of resources to grant write permissions to."
 }
 
 variable "rabbitmq_configure_permissions" {
   type        = string
-  default     = ".*"
-  description = ""
+  default     = ""
+  description = "List of resources to grant configure permissions to."
 }
 
 variable "rabbitmq_tags" {
   type        = string
   default     = null
-  description = "Comma separated list of Rabit MQ tags to assign to generated user"
+  description = "Comma separated list of RabbitMQ tags to assign to generated user"
 }
