@@ -1,7 +1,9 @@
 provider "vault" {
   address = "http://localhost:8200"
-  token   = "root"
+  token   = var.vault_token
 }
+
+variable "vault_token" {}
 
 module "transit_defaults" {
   source          = "../../"
@@ -9,7 +11,7 @@ module "transit_defaults" {
 
   transit_keys = [
     {
-      name                   = "test-key-1"
+      name                   = "dev"
       allow_plaintext_backup = false
       convergent_encryption  = false
       exportable             = false
@@ -20,7 +22,7 @@ module "transit_defaults" {
       min_encryption_version = 1
     },
     {
-      name                   = "test-key-2"
+      name                   = "staging"
       allow_plaintext_backup = false
       convergent_encryption  = false
       exportable             = false
