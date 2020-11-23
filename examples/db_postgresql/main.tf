@@ -8,10 +8,10 @@ variable "postgresql_path" {
 }
 
 variable "vault_token" {}
-variable "postgresql_user" {}
+variable "postgresql_username" {}
 variable "postgresql_password" {}
 
-module "mysql_static" {
+module "postgresql_static" {
   source          = "../../"
   secrets_engines = ["db"]
 
@@ -19,20 +19,20 @@ module "mysql_static" {
     "postgresql"
   ]
 
-  mysql_path = var.postgresql_path
+  postgresql_path = var.postgresql_path
 
-  mysql_allowed_roles  = ["*"]
-  mysql_connection_endpoint = "localhost:3306"
+  postgresql_allowed_roles  = ["*"]
+  postgresql_connection_endpoint = "localhost:5432"
 
-  mysql_username = var.postgresql_user
-  mysql_password = var.postgresql_password
+  postgresql_username = var.postgresql_username
+  postgresql_password = var.postgresql_password
 
   db_roles = [
     {
       backend               = var.postgresql_path
-      name                  = "mysql-role"
-      db_name               = "mysql"
-      creation_statements   = ["CREATE USER '{{name}}'@'%' IDENTIFIED BY '{{password}}';GRANT SELECT ON *.* TO '{{name}}'@'%';"]
+      name                  = "readonly"
+      db_name               = "postgresql"
+      creation_statements   = ["CREATE ROLE \"{{name}}\" WITH LOGIN PASSWORD '{{password}}' VALID UNTIL '{{expiration}}' INHERIT; GRANT ro TO \"{{name}}\";"]
       max_ttl               = 86400
       default_ttl           = 3600
       renew_statements      = []
@@ -44,10 +44,10 @@ module "mysql_static" {
   db_static_roles = [
     {
       backend             = var.postgresql_path
-      name                = "mysql-static-role"
-      db_name             = "mysql"
-      username            = "root"
-      rotation_statements = ["ALTER USER '{{name}}' IDENTIFIED BY '{{password}}';"]
+      name                = "postgresql-static-role"
+      db_name             = "postgresql"
+      username            = var.postgresql_username
+      rotation_statements = ["ALTER USER \"{{name}}\" WITH PASSWORD '{{password}}';"]
       rotation_period     = 86400
 
 

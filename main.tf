@@ -324,12 +324,21 @@ resource "vault_database_secret_backend_connection" "postgresql" {
   root_rotation_statements = var.postgresql_root_rotation_statements
 
   postgresql {
-    connection_url          = var.postgresql_connection_url
+    connection_url          = "postgresql://{{username}}:{{password}}@${var.postgresql_connection_endpoint}/postgres?sslmode=${var.postgresql_sslmode}"
     max_connection_lifetime = var.postgresql_max_connection_lifetime
     max_idle_connections    = var.postgresql_max_idle_connections
     max_open_connections    = var.postgresql_max_open_connections
   }
   verify_connection = var.postgresql_verify_connection
+
+  data = {
+    username = var.postgresql_username
+    password = var.postgresql_password
+  }
+
+  depends_on = [
+    vault_mount.postgresql
+  ]
 }
 
 resource "vault_mount" "oracle" {
