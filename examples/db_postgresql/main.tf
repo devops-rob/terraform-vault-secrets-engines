@@ -1,29 +1,35 @@
 provider "vault" {
   address = "http://localhost:8200"
-  token   = "root"
+  token   = var.vault_token
 }
 
-variable "mysql_path" {
-  default = "mysql"
+variable "postgresql_path" {
+  default = "postgresql"
 }
 
-module "db_defaults" {
+variable "vault_token" {}
+variable "postgresql_user" {}
+variable "postgresql_password" {}
+
+module "mysql_static" {
   source          = "../../"
   secrets_engines = ["db"]
 
   databases = [
-    "mysql"
+    "postgresql"
   ]
 
-  mysql_path = var.mysql_path
+  mysql_path = var.postgresql_path
 
-  mysql_allowed_roles = ["*"]
-  mysql_connection_url = "root:root@tcp(localhost:3306)/"
+  mysql_allowed_roles  = ["*"]
+  mysql_connection_endpoint = "localhost:3306"
 
+  mysql_username = var.postgresql_user
+  mysql_password = var.postgresql_password
 
   db_roles = [
     {
-      backend               = var.mysql_path
+      backend               = var.postgresql_path
       name                  = "mysql-role"
       db_name               = "mysql"
       creation_statements   = ["CREATE USER '{{name}}'@'%' IDENTIFIED BY '{{password}}';GRANT SELECT ON *.* TO '{{name}}'@'%';"]
@@ -37,12 +43,13 @@ module "db_defaults" {
 
   db_static_roles = [
     {
-      backend             = var.mysql_path
+      backend             = var.postgresql_path
       name                = "mysql-static-role"
       db_name             = "mysql"
       username            = "root"
-      rotation_statements = ["ALTER USER '{{name}}' WITH PASSWORD '{{password}}';"]
+      rotation_statements = ["ALTER USER '{{name}}' IDENTIFIED BY '{{password}}';"]
       rotation_period     = 86400
+
 
     }
   ]

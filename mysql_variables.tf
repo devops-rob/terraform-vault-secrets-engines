@@ -52,10 +52,10 @@ variable "mysql_verify_connection" {
   description = "Whether the connection should be verified on initial configuration or not."
 }
 
-variable "mysql_connection_url" {
+variable "mysql_connection_endpoint" {
   type        = string
-  default     = "root:root@tcp(localhost:3306)/"
-  description = "A URL containing connection information."
+  default     = "localhost:3306"
+  description = "A URL containing connection endpoint."
 }
 
 variable "mysql_max_connection_lifetime" {
@@ -74,6 +74,18 @@ variable "mysql_max_open_connections" {
   type        = number
   default     = 360
   description = "The maximum number of open connections to use."
+}
+
+variable "mysql_username" {
+  type        = string
+  default     = null
+  description = "The username for the MySQL database that Vault needs to connect to."
+}
+
+variable "mysql_password" {
+  type        = string
+  default     = null
+  description = "The password for the MySQL database that Vault needs to connect to."
 }
 
 

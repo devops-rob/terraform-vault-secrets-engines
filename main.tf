@@ -121,7 +121,7 @@ resource "vault_mount" "ssh" {
 resource "vault_mount" "cassandra" {
   count = contains(var.databases, "cassandra") ? 1 : 0
   path  = var.cassandra_path
-  type  = "db"
+  type  = "database"
 
   default_lease_ttl_seconds = var.cassandra_default_lease
   max_lease_ttl_seconds     = var.cassandra_max_lease
@@ -162,7 +162,7 @@ resource "vault_database_secret_backend_connection" "cassandra" {
 resource "vault_mount" "mongodb" {
   count = contains(var.databases, "mongodb") ? 1 : 0
   path  = var.mongodb_path
-  type  = "db"
+  type  = "database"
 
   default_lease_ttl_seconds = var.mongodb_default_lease
   max_lease_ttl_seconds     = var.mongodb_max_lease
@@ -183,18 +183,24 @@ resource "vault_database_secret_backend_connection" "mongodb" {
   root_rotation_statements = var.mongodb_root_rotation_statements
 
   mongodb {
-    connection_url          = var.mongodb_connection_url
+    connection_url          = "mongodb://{{username}}:{{password}}@${var.mongodb_connection_endpoint}/admin?tls=${var.mongodb_tls}"
     max_connection_lifetime = var.mongodb_max_connection_lifetime
     max_idle_connections    = var.mongodb_max_idle_connections
     max_open_connections    = var.mongodb_max_open_connections
   }
+
+  data = {
+    username = var.mongodb_username
+    password = var.mongodb_password
+  }
+
   verify_connection = var.mongodb_verify_connection
 }
 
 resource "vault_mount" "hana" {
   count = contains(var.databases, "hana") ? 1 : 0
   path  = var.hana_path
-  type  = "db"
+  type  = "database"
 
   default_lease_ttl_seconds = var.hana_default_lease
   max_lease_ttl_seconds     = var.hana_max_lease
@@ -279,18 +285,25 @@ resource "vault_database_secret_backend_connection" "mysql" {
   root_rotation_statements = var.mysql_root_rotation_statements
 
   mysql {
-    connection_url          = var.mysql_connection_url
+    connection_url          = "{{username}}:{{password}}@tcp(${var.mysql_connection_endpoint})/"
     max_connection_lifetime = var.mysql_max_connection_lifetime
     max_idle_connections    = var.mysql_max_idle_connections
     max_open_connections    = var.mysql_max_open_connections
   }
   verify_connection = var.mysql_verify_connection
+
+  data = {
+    username = var.mysql_username
+    password = var.mysql_password
+  }
+
+  depends_on = [vault_mount.mysql]
 }
 
 resource "vault_mount" "postgresql" {
   count = contains(var.databases, "postgresql") ? 1 : 0
   path  = var.postgresql_path
-  type  = "db"
+  type  = "database"
 
   default_lease_ttl_seconds = var.postgresql_default_lease
   max_lease_ttl_seconds     = var.postgresql_max_lease
@@ -322,7 +335,7 @@ resource "vault_database_secret_backend_connection" "postgresql" {
 resource "vault_mount" "oracle" {
   count = contains(var.databases, "oracle") ? 1 : 0
   path  = var.oracle_path
-  type  = "db"
+  type  = "database"
 
   default_lease_ttl_seconds = var.oracle_default_lease
   max_lease_ttl_seconds     = var.oracle_max_lease
@@ -354,7 +367,7 @@ resource "vault_database_secret_backend_connection" "oracle" {
 resource "vault_mount" "elasticsearch" {
   count = contains(var.databases, "elasticsearch") ? 1 : 0
   path  = var.elasticsearch_path
-  type  = "db"
+  type  = "database"
 
   default_lease_ttl_seconds = var.elasticsearch_default_lease
   max_lease_ttl_seconds     = var.elasticsearch_max_lease
@@ -400,6 +413,18 @@ resource "vault_database_secret_backend_role" "roles" {
 
   default_ttl = each.value["default_ttl"]
   max_ttl     = each.value["max_ttl"]
+
+  depends_on = [
+    vault_mount.mysql,
+    vault_mount.mongodb,
+    vault_mount.elasticsearch,
+    vault_mount.oracle,
+    vault_mount.postgresql,
+    vault_mount.mssql,
+    vault_mount.hana,
+    vault_mount.mongodb,
+  ]
+
 }
 
 resource "vault_database_secret_backend_static_role" "roles" {
@@ -415,6 +440,17 @@ resource "vault_database_secret_backend_static_role" "roles" {
   rotation_statements = each.value["rotation_statements"]
   rotation_period     = each.value["rotation_period"]
   username            = each.value["username"]
+
+  depends_on = [
+    vault_mount.mysql,
+    vault_mount.mongodb,
+    vault_mount.elasticsearch,
+    vault_mount.oracle,
+    vault_mount.postgresql,
+    vault_mount.mssql,
+    vault_mount.hana,
+    vault_mount.mongodb,
+  ]
 }
 
 resource "vault_mount" "transit" {

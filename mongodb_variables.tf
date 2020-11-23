@@ -52,10 +52,15 @@ variable "mongodb_verify_connection" {
   description = "Whether the connection should be verified on initial configuration or not."
 }
 
-variable "mongodb_connection_url" {
+variable "mongodb_connection_endpoint" {
   type        = string
-  default     = "mongodb://admin:mypassword@localhost:27017/admin?tls=false"
+  default     = "localhost:27017"
   description = "A URL containing connection information."
+}
+variable "mongodb_tls" {
+  type        = string
+  default     = "false"
+  description = "Whether mongodb connection should use tls. Valid arguments are 'true' or 'false'."
 }
 
 variable "mongodb_max_connection_lifetime" {
@@ -76,4 +81,15 @@ variable "mongodb_max_open_connections" {
   description = "The maximum number of open connections to use."
 }
 
+variable "mongodb_username" {
+  type        = string
+  default     = null
+  description = "Username for MongoDB."
+}
+
+variable "mongodb_password" {
+  type        = string
+  default     = null
+  description = "Password for MongoDB."
+}
 
