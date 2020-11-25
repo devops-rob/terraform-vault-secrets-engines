@@ -52,10 +52,28 @@ variable "postgresql_verify_connection" {
   description = "Whether the connection should be verified on initial configuration or not."
 }
 
-variable "postgresql_connection_url" {
+variable "postgresql_connection_endpoint" {
   type        = string
-  default     = "postgresql://postgres:myPassword@localhost:5432/postgres?sslmode=disable"
-  description = "A URL containing connection information."
+  default     = "localhost:5432"
+  description = "PostgreSQL endpoint to connect to."
+}
+
+variable "postgresql_username" {
+  type = string
+  default = null
+  description = "PostgreSQL user to authenticate with."
+}
+
+variable "postgresql_password" {
+  type = string
+  default = null
+  description = "PostgreSQL password to authenticate with."
+}
+
+variable "postgresql_sslmode" {
+  type = string
+  default = "disable"
+  description = "SSL mode to use when Vault connects to PostgreSQL."
 }
 
 variable "postgresql_max_connection_lifetime" {
