@@ -54,7 +54,7 @@ variable "cassandra_verify_connection" {
 
 variable "cassandra_hosts" {
   type    = list(string)
-  default = ["127.0.0.1"]
+  default = ["127.0.0.1:9042"]
   description = "A URL containing connection information."
 
 }

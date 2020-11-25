@@ -154,9 +154,14 @@ resource "vault_database_secret_backend_connection" "cassandra" {
 
     protocol_version = var.cassandra_protocol_version
     connect_timeout  = var.cassandra_connect_timeout
+
   }
 
   verify_connection = var.cassandra_verify_connection
+
+  depends_on = [
+    vault_mount.cassandra
+  ]
 }
 
 resource "vault_mount" "mongodb" {
@@ -432,6 +437,8 @@ resource "vault_database_secret_backend_role" "roles" {
     vault_mount.mssql,
     vault_mount.hana,
     vault_mount.mongodb,
+    vault_mount.cassandra,
+    vault_database_secret_backend_connection.cassandra
   ]
 
 }
@@ -459,6 +466,8 @@ resource "vault_database_secret_backend_static_role" "roles" {
     vault_mount.mssql,
     vault_mount.hana,
     vault_mount.mongodb,
+    vault_mount.cassandra,
+    vault_database_secret_backend_connection.cassandra
   ]
 }
 
