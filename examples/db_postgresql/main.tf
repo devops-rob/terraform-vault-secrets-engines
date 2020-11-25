@@ -36,7 +36,7 @@ module "postgresql_static" {
       max_ttl               = 86400
       default_ttl           = 3600
       renew_statements      = []
-      revocation_statements = []
+      revocation_statements = ["ALTER ROLE \"{{name}}\" NOLOGIN;"]
       rollback_statements   = []
     }
   ]

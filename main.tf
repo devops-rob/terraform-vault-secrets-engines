@@ -438,7 +438,13 @@ resource "vault_database_secret_backend_role" "roles" {
     vault_mount.hana,
     vault_mount.mongodb,
     vault_mount.cassandra,
-    vault_database_secret_backend_connection.cassandra
+    vault_database_secret_backend_connection.cassandra,
+    vault_database_secret_backend_connection.elasticsearch,
+    vault_database_secret_backend_connection.hana,
+    vault_database_secret_backend_connection.mongodb,
+    vault_database_secret_backend_connection.mssql,
+    vault_database_secret_backend_connection.mysql,
+    vault_database_secret_backend_connection.oracle,
   ]
 
 }
