@@ -207,6 +207,15 @@ resource "vault_database_secret_backend_connection" "mongodb" {
   data = {
     username = var.mongodb_username
     password = var.mongodb_password
+    addr  = var.vault_addr
+    token = var.vault_token
+
+  }
+
+  provisioner "local-exec" {
+    when    = destroy
+    command = "${path.module}/revoke_lease.sh ${self.data.token} ${self.name} ${self.data.addr}"
+
   }
 
   verify_connection = var.mongodb_verify_connection
