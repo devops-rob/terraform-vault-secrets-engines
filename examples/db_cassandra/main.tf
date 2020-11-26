@@ -19,6 +19,9 @@ module "cassandra_static" {
     "cassandra"
   ]
 
+  vault_token = var.vault_token
+  vault_addr  = "http://localhost:8200"
+
   cassandra_path = var.cassandra_path
 
   cassandra_allowed_roles = ["*"]

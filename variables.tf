@@ -4,17 +4,17 @@ variable "secrets_engines" {
   description = "A list of secrets engines to enable"
 
   validation {
-    condition     = can(contains(
-    [
-      "aws",
-      "azure",
-      "gcp",
-      "consul",
-      "pki",
-      "transit",
-      "rabbitmq",
-      "ssh",
-      "db"
+    condition = can(contains(
+      [
+        "aws",
+        "azure",
+        "gcp",
+        "consul",
+        "pki",
+        "transit",
+        "rabbitmq",
+        "ssh",
+        "db"
     ], var.secrets_engines))
     error_message = "Invalid secrets engines."
   }
@@ -48,6 +48,18 @@ variable "external_entropy_access" {
   type        = bool
   default     = false
   description = "Boolean flag that can be explicitly set to true to enable the secrets engine to access Vault's external entropy source"
+}
+
+variable "vault_token" {
+  type        = string
+  default     = null
+  description = "Vault token to use for authentication."
+}
+
+variable "vault_addr" {
+  type        = string
+  default     = "http://localhost:8200"
+  description = "Vault address."
 }
 
 

@@ -138,7 +138,7 @@ resource "vault_database_secret_backend_connection" "cassandra" {
   count   = contains(var.databases, "cassandra") ? 1 : 0
   backend = vault_mount.cassandra[count.index].path
 
-  name                     = "cassandra"
+  name                     = var.cassandra_path
   allowed_roles            = var.cassandra_allowed_roles
   root_rotation_statements = var.cassandra_root_rotation_statements
 
@@ -158,6 +158,16 @@ resource "vault_database_secret_backend_connection" "cassandra" {
   }
 
   verify_connection = var.cassandra_verify_connection
+
+  data = {
+    addr  = var.vault_addr
+    token = var.vault_token
+  }
+  provisioner "local-exec" {
+    when    = destroy
+    command = "${path.module}/revoke_lease.sh ${self.data.token} ${self.name} ${self.data.addr}"
+
+  }
 
   depends_on = [
     vault_mount.cassandra
