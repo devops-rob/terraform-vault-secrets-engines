@@ -138,7 +138,7 @@ resource "vault_database_secret_backend_connection" "cassandra" {
   count   = contains(var.databases, "cassandra") ? 1 : 0
   backend = vault_mount.cassandra[count.index].path
 
-  name                     = "cassandra"
+  name                     = var.cassandra_path
   allowed_roles            = var.cassandra_allowed_roles
   root_rotation_statements = var.cassandra_root_rotation_statements
 
@@ -158,6 +158,15 @@ resource "vault_database_secret_backend_connection" "cassandra" {
   }
 
   verify_connection = var.cassandra_verify_connection
+
+  data = {
+    addr  = var.vault_addr
+    token = var.vault_token
+  }
+  provisioner "local-exec" {
+    when    = destroy
+    command = "${path.module}/revoke_lease.sh ${self.data.token} ${self.name} ${self.data.addr}"
+  }
 
   depends_on = [
     vault_mount.cassandra
@@ -183,7 +192,7 @@ resource "vault_database_secret_backend_connection" "mongodb" {
   count   = contains(var.databases, "mongodb") ? 1 : 0
   backend = vault_mount.mongodb[count.index].path
 
-  name                     = "mongodb"
+  name                     = var.mongodb_path
   allowed_roles            = var.mongodb_allowed_roles
   root_rotation_statements = var.mongodb_root_rotation_statements
 
@@ -197,6 +206,13 @@ resource "vault_database_secret_backend_connection" "mongodb" {
   data = {
     username = var.mongodb_username
     password = var.mongodb_password
+    addr     = var.vault_addr
+    token    = var.vault_token
+  }
+
+  provisioner "local-exec" {
+    when    = destroy
+    command = "${path.module}/revoke_lease.sh ${self.data.token} ${self.name} ${self.data.addr}"
   }
 
   verify_connection = var.mongodb_verify_connection
@@ -221,7 +237,7 @@ resource "vault_database_secret_backend_connection" "hana" {
   count   = contains(var.databases, "hana") ? 1 : 0
   backend = vault_mount.hana[count.index].path
 
-  name                     = "hana"
+  name                     = var.hana_path
   allowed_roles            = var.hana_allowed_roles
   root_rotation_statements = var.hana_root_rotation_statements
 
@@ -231,6 +247,16 @@ resource "vault_database_secret_backend_connection" "hana" {
     max_idle_connections    = var.hana_max_idle_connections
     max_open_connections    = var.hana_max_open_connections
   }
+
+  data = {
+    addr  = var.vault_addr
+    token = var.vault_token
+  }
+  provisioner "local-exec" {
+    when    = destroy
+    command = "${path.module}/revoke_lease.sh ${self.data.token} ${self.name} ${self.data.addr}"
+  }
+
   verify_connection = var.hana_verify_connection
 }
 
@@ -253,7 +279,7 @@ resource "vault_database_secret_backend_connection" "mssql" {
   count   = contains(var.databases, "mssql") ? 1 : 0
   backend = vault_mount.mssql[count.index].path
 
-  name                     = "mssql"
+  name                     = var.mssql_path
   allowed_roles            = var.mssql_allowed_roles
   root_rotation_statements = var.mssql_root_rotation_statements
 
@@ -263,6 +289,16 @@ resource "vault_database_secret_backend_connection" "mssql" {
     max_idle_connections    = var.mssql_max_idle_connections
     max_open_connections    = var.mssql_max_open_connections
   }
+
+  data = {
+    addr  = var.vault_addr
+    token = var.vault_token
+  }
+  provisioner "local-exec" {
+    when    = destroy
+    command = "${path.module}/revoke_lease.sh ${self.data.token} ${self.name} ${self.data.addr}"
+  }
+
   verify_connection = var.mssql_verify_connection
 }
 
@@ -285,7 +321,7 @@ resource "vault_database_secret_backend_connection" "mysql" {
   count   = contains(var.databases, "mysql") ? 1 : 0
   backend = vault_mount.mysql[count.index].path
 
-  name                     = "mysql"
+  name                     = var.mysql_path
   allowed_roles            = var.mysql_allowed_roles
   root_rotation_statements = var.mysql_root_rotation_statements
 
@@ -300,6 +336,13 @@ resource "vault_database_secret_backend_connection" "mysql" {
   data = {
     username = var.mysql_username
     password = var.mysql_password
+    addr     = var.vault_addr
+    token    = var.vault_token
+  }
+
+  provisioner "local-exec" {
+    when    = destroy
+    command = "${path.module}/revoke_lease.sh ${self.data.token} ${self.name} ${self.data.addr}"
   }
 
   depends_on = [vault_mount.mysql]
@@ -324,7 +367,7 @@ resource "vault_database_secret_backend_connection" "postgresql" {
   count   = contains(var.databases, "postgresql") ? 1 : 0
   backend = vault_mount.postgresql[count.index].path
 
-  name                     = "postgresql"
+  name                     = var.postgresql_path
   allowed_roles            = var.postgresql_allowed_roles
   root_rotation_statements = var.postgresql_root_rotation_statements
 
@@ -339,6 +382,13 @@ resource "vault_database_secret_backend_connection" "postgresql" {
   data = {
     username = var.postgresql_username
     password = var.postgresql_password
+    addr     = var.vault_addr
+    token    = var.vault_token
+  }
+
+  provisioner "local-exec" {
+    when    = destroy
+    command = "${path.module}/revoke_lease.sh ${self.data.token} ${self.name} ${self.data.addr}"
   }
 
   depends_on = [
@@ -365,7 +415,7 @@ resource "vault_database_secret_backend_connection" "oracle" {
   count   = contains(var.databases, "oracle") ? 1 : 0
   backend = vault_mount.oracle[count.index].path
 
-  name                     = "oracle"
+  name                     = var.oracle_path
   allowed_roles            = var.oracle_allowed_roles
   root_rotation_statements = var.oracle_root_rotation_statements
 
@@ -376,6 +426,17 @@ resource "vault_database_secret_backend_connection" "oracle" {
     max_open_connections    = var.oracle_max_open_connections
   }
   verify_connection = var.oracle_verify_connection
+
+  data = {
+    addr  = var.vault_addr
+    token = var.vault_token
+  }
+
+  provisioner "local-exec" {
+    when    = destroy
+    command = "${path.module}/revoke_lease.sh ${self.data.token} ${self.name} ${self.data.addr}"
+  }
+
 }
 
 resource "vault_mount" "elasticsearch" {
@@ -397,7 +458,7 @@ resource "vault_database_secret_backend_connection" "elasticsearch" {
   count   = contains(var.databases, "elasticsearch") ? 1 : 0
   backend = vault_mount.elasticsearch[count.index].path
 
-  name                     = "elasticsearch"
+  name                     = var.elasticsearch_path
   allowed_roles            = var.elasticsearch_allowed_roles
   root_rotation_statements = var.elasticsearch_root_rotation_statements
 
@@ -407,8 +468,18 @@ resource "vault_database_secret_backend_connection" "elasticsearch" {
     password = var.elasticsearch_password
   }
   verify_connection = var.elasticsearch_verify_connection
-}
 
+  data = {
+    addr  = var.vault_addr
+    token = var.vault_token
+  }
+
+  provisioner "local-exec" {
+    when    = destroy
+    command = "${path.module}/revoke_lease.sh ${self.data.token} ${self.name} ${self.data.addr}"
+  }
+
+}
 
 resource "vault_database_secret_backend_role" "roles" {
   for_each = {

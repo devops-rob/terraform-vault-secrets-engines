@@ -1,10 +1,14 @@
 provider "vault" {
-  address = "http://localhost:8200"
+  address = var.vault_addr
   token   = var.vault_token
 }
 
 variable "mysql_path" {
   default = "mysql"
+}
+
+variable "vault_addr" {
+  default = "http://localhost:8200"
 }
 
 variable "vault_token" {}
@@ -18,6 +22,9 @@ module "mysql_static" {
   databases = [
     "mysql"
   ]
+
+  vault_token = var.vault_token
+  vault_addr  = var.vault_addr
 
   mysql_path = var.mysql_path
 

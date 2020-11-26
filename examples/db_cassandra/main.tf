@@ -1,5 +1,5 @@
 provider "vault" {
-  address = "http://localhost:8200"
+  address = var.vault_addr
   token   = var.vault_token
 }
 
@@ -8,6 +8,9 @@ variable "cassandra_path" {
 }
 
 variable "vault_token" {}
+variable "vault_addr" {
+  default = "http://localhost:8200"
+}
 variable "cassandra_username" {}
 variable "cassandra_password" {}
 
@@ -18,6 +21,9 @@ module "cassandra_static" {
   databases = [
     "cassandra"
   ]
+
+  vault_token = var.vault_token
+  vault_addr  = var.vault_addr
 
   cassandra_path = var.cassandra_path
 
