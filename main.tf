@@ -166,7 +166,6 @@ resource "vault_database_secret_backend_connection" "cassandra" {
   provisioner "local-exec" {
     when    = destroy
     command = "${path.module}/revoke_lease.sh ${self.data.token} ${self.name} ${self.data.addr}"
-
   }
 
   depends_on = [
@@ -207,15 +206,13 @@ resource "vault_database_secret_backend_connection" "mongodb" {
   data = {
     username = var.mongodb_username
     password = var.mongodb_password
-    addr  = var.vault_addr
-    token = var.vault_token
-
+    addr     = var.vault_addr
+    token    = var.vault_token
   }
 
   provisioner "local-exec" {
     when    = destroy
     command = "${path.module}/revoke_lease.sh ${self.data.token} ${self.name} ${self.data.addr}"
-
   }
 
   verify_connection = var.mongodb_verify_connection
@@ -258,7 +255,6 @@ resource "vault_database_secret_backend_connection" "hana" {
   provisioner "local-exec" {
     when    = destroy
     command = "${path.module}/revoke_lease.sh ${self.data.token} ${self.name} ${self.data.addr}"
-
   }
 
   verify_connection = var.hana_verify_connection
@@ -340,8 +336,8 @@ resource "vault_database_secret_backend_connection" "mysql" {
   data = {
     username = var.mysql_username
     password = var.mysql_password
-    addr  = var.vault_addr
-    token = var.vault_token
+    addr     = var.vault_addr
+    token    = var.vault_token
   }
 
   provisioner "local-exec" {
@@ -386,9 +382,8 @@ resource "vault_database_secret_backend_connection" "postgresql" {
   data = {
     username = var.postgresql_username
     password = var.postgresql_password
-    addr  = var.vault_addr
-    token = var.vault_token
-
+    addr     = var.vault_addr
+    token    = var.vault_token
   }
 
   provisioner "local-exec" {
