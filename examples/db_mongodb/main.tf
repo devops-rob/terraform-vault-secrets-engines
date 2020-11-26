@@ -1,10 +1,14 @@
 provider "vault" {
-  address = "http://localhost:8200"
+  address = var.vault_addr
   token   = var.vault_token
 }
 
 variable "mongodb_path" {
   default = "mongodb"
+}
+
+variable "vault_addr" {
+  default = "http://localhost:8200"
 }
 
 variable "vault_token" {}
@@ -18,6 +22,9 @@ module "mongodb_static" {
   databases = [
     "mongodb"
   ]
+
+  vault_token = var.vault_token
+  vault_addr  = var.vault_addr
 
   mongodb_path = var.mongodb_path
 
